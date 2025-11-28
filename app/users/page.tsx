@@ -1,3 +1,5 @@
+import { log } from "console";
+
 // Definimos um tipo para o usuário para ter um código mais seguro e previsível.
 type User = {
   id: number;
@@ -5,19 +7,17 @@ type User = {
   email: string;
 };
 
-// Esta função busca os dados da nossa API.
-// O Next.js automaticamente gerencia o cache dessa requisição.
 async function getUsers(): Promise<User[]> {
-  // Como este código roda no servidor, precisamos usar a URL absoluta da API.
-  // Em produção, use uma variável de ambiente para o domínio (ex: process.env.NEXT_PUBLIC_API_URL).
-  const res = await fetch("http://localhost:3000/api/users");
+  const apiURl = process.env.NEXT_PUBLIC_API_URL;
+  const urlUser = `${apiURl}/api/users`;
+  console.log(urlUser);
 
-  if (!res.ok) {
-    // Recomendo tratar os erros de forma mais robusta em uma aplicação real.
-    throw new Error("Falha ao buscar usuários");
+  try {
+    const res = await fetch(urlUser);
+    return res.json();
+  } catch (ex) {
+    throw new Error("Falha ao buscar usuários" + ex);
   }
-
-  return res.json();
 }
 
 export default async function Users() {
