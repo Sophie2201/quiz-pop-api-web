@@ -1,4 +1,5 @@
 import { log } from "console";
+import urlUtils from "../../core/utils/UrlUtils";
 
 // Definimos um tipo para o usuário para ter um código mais seguro e previsível.
 type User = {
@@ -8,9 +9,9 @@ type User = {
 };
 
 async function getUsers(): Promise<User[]> {
-  const apiURl = process.env.NEXT_PUBLIC_API_URL;
+  const apiURl = urlUtils.getUrlBase();
+  console.log(`ApiUrl: ${apiURl}`);
   const urlUser = `${apiURl}/api/users`;
-  console.log(urlUser);
 
   try {
     const res = await fetch(urlUser);
