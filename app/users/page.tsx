@@ -15,9 +15,14 @@ async function getUsers(): Promise<User[]> {
 
   try {
     const res = await fetch(urlUser);
+    if (!res.ok) {
+      throw new Error(`Falha ao buscar usuários. Status: ${res.status}`);
+    }
+
     return res.json();
-  } catch (ex) {
-    throw new Error("Falha ao buscar usuários" + ex);
+  } catch (error) {
+    console.error("Erro detalhado:", error);
+    throw new Error("Não foi possível carregar os dados dos usuários.");
   }
 }
 
