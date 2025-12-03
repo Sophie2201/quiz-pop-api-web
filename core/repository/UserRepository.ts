@@ -1,3 +1,5 @@
+import { UserDTO } from "../model/dto/UserDTO";
+
 class UserRepository {
   users: Array<UserDTO> = [
     {

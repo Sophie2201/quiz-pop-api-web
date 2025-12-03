@@ -1,27 +1,14 @@
-import { log } from "console";
-import urlUtils from "../../core/utils/UrlUtils";
+import userService from "@/core/service/UserService";
+import { UserDTO } from "@/core/model/dto/UserDTO";
 
-// Definimos um tipo para o usuário para ter um código mais seguro e previsível.
-type User = {
-  id: number;
-  name: string;
-  email: string;
-};
-
-async function getUsers(): Promise<User[]> {
-  const apiURl = urlUtils.getUrlBase();
-  console.log(`ApiUrl: ${apiURl}`);
-  const urlUser = `${apiURl}/api/users`;
-
+async function getUsers(): Promise<UserDTO[]> {
+  // Os dados agora são buscados diretamente do service,
+  // evitando chamadas HTTP durante o build.
   try {
-    const res = await fetch(urlUser);
-    if (!res.ok) {
-      throw new Error(`Falha ao buscar usuários. Status: ${res.status}`);
-    }
-
-    return res.json();
+    const users = await userService.findAll();
+    return users;
   } catch (error) {
-    console.error("Erro detalhado:", error);
+    console.error("Erro ao buscar usuários:", error);
     throw new Error("Não foi possível carregar os dados dos usuários.");
   }
 }
